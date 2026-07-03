@@ -25,6 +25,9 @@ public class RegisterPage {
     private final By registerButton =
             By.cssSelector("#root > div > main > div > form > button");
 
+    private final By errorText =
+            By.xpath("//*[contains(text(),'Некорректный пароль')]");
+
     public RegisterPage(WebDriver driver) {
         this.driver = driver;
     }
@@ -54,12 +57,22 @@ public class RegisterPage {
         passwordInput.clear();
         passwordInput.sendKeys(password);
 
-        System.out.println("NAME = " + nameInput.getAttribute("value"));
-        System.out.println("EMAIL = " + emailInput.getAttribute("value"));
-        System.out.println("PASSWORD_LENGTH = "
-                + passwordInput.getAttribute("value").length());
-
         wait.until(ExpectedConditions.elementToBeClickable(registerButton))
                 .click();
+    }
+
+    public By getErrorText() {
+        return errorText;
+    }
+
+    public boolean isPasswordErrorVisible() {
+        try {
+            new WebDriverWait(driver, Duration.ofSeconds(5))
+                    .until(ExpectedConditions.visibilityOfElementLocated(errorText));
+
+            return driver.findElement(errorText).isDisplayed();
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

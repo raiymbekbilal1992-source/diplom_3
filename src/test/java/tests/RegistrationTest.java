@@ -1,5 +1,7 @@
 package tests;
 
+import io.qameta.allure.Description;
+import io.qameta.allure.junit4.DisplayName;
 import models.User;
 import org.junit.Test;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -17,6 +19,8 @@ import static org.junit.Assert.assertTrue;
 public class RegistrationTest extends BaseTest {
 
     @Test
+    @DisplayName("Успешная регистрация пользователя")
+    @Description("Проверка успешной регистрации нового пользователя")
     public void userCanRegisterSuccessfully() {
 
         User user = UserGenerator.getRandomUser();
@@ -26,7 +30,6 @@ public class RegistrationTest extends BaseTest {
         RegisterPage registerPage = new RegisterPage(driver);
 
         homePage.clickLoginButton();
-
         loginPage.clickRegisterLink();
 
         registerPage.registerUser(
@@ -39,5 +42,28 @@ public class RegistrationTest extends BaseTest {
                 .until(ExpectedConditions.urlContains("/login"));
 
         assertTrue(driver.getCurrentUrl().contains("/login"));
+    }
+
+    @Test
+    @DisplayName("Ошибка для короткого пароля")
+    @Description("Проверка сообщения об ошибке при пароле менее 6 символов")
+    public void shouldShowErrorForShortPassword() {
+
+        User user = UserGenerator.getRandomUser();
+
+        HomePage homePage = new HomePage(driver);
+        LoginPage loginPage = new LoginPage(driver);
+        RegisterPage registerPage = new RegisterPage(driver);
+
+        homePage.clickLoginButton();
+        loginPage.clickRegisterLink();
+
+        registerPage.registerUser(
+                user.getName(),
+                user.getEmail(),
+                "12345"
+        );
+
+        assertTrue(registerPage.isPasswordErrorVisible());
     }
 }

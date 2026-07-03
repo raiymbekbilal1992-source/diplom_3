@@ -1,6 +1,7 @@
 package utils;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import io.qameta.allure.Step;
 import org.junit.After;
 import org.junit.Before;
 import org.openqa.selenium.WebDriver;
@@ -11,6 +12,7 @@ public class BaseTest {
     protected WebDriver driver;
 
     @Before
+    @Step("Открыть браузер")
     public void setUp() {
 
         WebDriverManager.chromedriver().setup();
@@ -23,6 +25,7 @@ public class BaseTest {
     }
 
     @After
+    @Step("Закрыть браузер")
     public void tearDown() {
 
         if (driver != null) {

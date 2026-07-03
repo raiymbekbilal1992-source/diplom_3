@@ -48,6 +48,14 @@ public class HomePage {
 
     @Step("Открыть личный кабинет")
     public void clickPersonalAccount() {
+
+        new WebDriverWait(driver, Duration.ofSeconds(20))
+                .until(ExpectedConditions.invisibilityOfElementLocated(
+                        By.cssSelector(".Modal_modal_overlay__x2ZCr")));
+
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.elementToBeClickable(personalAccountButton));
+
         driver.findElement(personalAccountButton).click();
     }
 
