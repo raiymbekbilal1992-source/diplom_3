@@ -28,6 +28,9 @@ public class RegisterPage {
     private final By errorText =
             By.xpath("//*[contains(text(),'Некорректный пароль')]");
 
+    private final By loginLink =
+            By.xpath("//a[text()='Войти']");
+
     public RegisterPage(WebDriver driver) {
         this.driver = driver;
     }
@@ -61,8 +64,11 @@ public class RegisterPage {
                 .click();
     }
 
-    public By getErrorText() {
-        return errorText;
+    @Step("Перейти на страницу авторизации из формы регистрации")
+    public void clickLoginLink() {
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.elementToBeClickable(loginLink))
+                .click();
     }
 
     public boolean isPasswordErrorVisible() {

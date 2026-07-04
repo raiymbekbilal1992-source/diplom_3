@@ -1,5 +1,6 @@
 package api;
 
+import io.qameta.allure.Step;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import models.User;
@@ -15,6 +16,7 @@ public class UserClient {
         RestAssured.baseURI = BASE_URI;
     }
 
+    @Step("Создание пользователя через API")
     public Response createUser(User user) {
 
         return given()
@@ -23,6 +25,7 @@ public class UserClient {
                 .post("/api/auth/register");
     }
 
+    @Step("Логин пользователя через API")
     public Response login(User user) {
 
         return given()
@@ -31,6 +34,7 @@ public class UserClient {
                 .post("/api/auth/login");
     }
 
+    @Step("Удаление пользователя через API")
     public Response deleteUser(String accessToken) {
 
         return given()

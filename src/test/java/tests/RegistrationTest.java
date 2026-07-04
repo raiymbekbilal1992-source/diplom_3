@@ -1,8 +1,10 @@
 package tests;
 
+import api.UserClient;
 import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import models.User;
+import org.junit.After;
 import org.junit.Test;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -17,6 +19,16 @@ import java.time.Duration;
 import static org.junit.Assert.assertTrue;
 
 public class RegistrationTest extends BaseTest {
+
+    private final UserClient userClient = new UserClient();
+    private String accessToken;
+
+    @After
+    public void deleteUser() {
+        if (accessToken != null) {
+            userClient.deleteUser(accessToken);
+        }
+    }
 
     @Test
     @DisplayName("Успешная регистрация пользователя")
@@ -42,6 +54,11 @@ public class RegistrationTest extends BaseTest {
                 .until(ExpectedConditions.urlContains("/login"));
 
         assertTrue(driver.getCurrentUrl().contains("/login"));
+
+        // получаем токен через API, чтобы удалить пользователя в @After
+        accessToken = userClient.login(user)
+                .jsonPath()
+                .getString("accessToken");
     }
 
     @Test

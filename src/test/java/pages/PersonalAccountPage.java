@@ -2,7 +2,9 @@ package pages;
 
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -23,8 +25,9 @@ public class PersonalAccountPage {
     public void clickLogout() {
 
         new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.elementToBeClickable(logoutButton));
+                .until(ExpectedConditions.presenceOfElementLocated(logoutButton));
 
-        driver.findElement(logoutButton).click();
+        WebElement element = driver.findElement(logoutButton);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
     }
 }
